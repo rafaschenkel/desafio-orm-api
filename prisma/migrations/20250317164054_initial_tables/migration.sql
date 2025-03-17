@@ -1,22 +1,9 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Jogo` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Personagem` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropTable
-DROP TABLE "Jogo";
-
--- DropTable
-DROP TABLE "Personagem";
-
 -- CreateTable
 CREATE TABLE "jogo" (
     "id" UUID NOT NULL,
     "nome" VARCHAR(120) NOT NULL,
     "genero" VARCHAR(50) NOT NULL,
-    "preco" DECIMAL(4,2) NOT NULL,
+    "preco" DECIMAL(6,2) NOT NULL,
     "tamanho" INTEGER NOT NULL,
     "dt_lancamento" DATE NOT NULL,
     "multiplayer" BOOLEAN NOT NULL,
@@ -29,9 +16,9 @@ CREATE TABLE "personagem" (
     "id" UUID NOT NULL,
     "nome" VARCHAR(50) NOT NULL,
     "idade" INTEGER NOT NULL,
-    "forca" SMALLINT NOT NULL,
-    "inteligencia" SMALLINT NOT NULL,
-    "habilidades" VARCHAR(80)[],
+    "forca" INTEGER NOT NULL,
+    "inteligencia" INTEGER NOT NULL,
+    "habilidades" TEXT NOT NULL,
     "id_jogo" UUID NOT NULL,
 
     CONSTRAINT "personagem_pkey" PRIMARY KEY ("id")
