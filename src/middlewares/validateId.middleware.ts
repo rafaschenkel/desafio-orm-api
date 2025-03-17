@@ -6,14 +6,18 @@ export async function validateIdMiddleware(
   res: Response,
   next: NextFunction
 ) {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  if (!validateUuid(id)) {
-    res.status(400).json({
-      message: "O campo id está em um formato inválido, deve ser um uuidV4",
-    });
-    return;
+    if (!validateUuid(id)) {
+      res.status(400).json({
+        message: "O campo id está em um formato inválido, deve ser um uuidV4",
+      });
+      return;
+    }
+
+    next();
+  } catch (error) {
+    res.status(500).json({ message: error });
   }
-
-  next();
 }
