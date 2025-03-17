@@ -7,6 +7,8 @@ CREATE TABLE "jogo" (
     "tamanho" INTEGER NOT NULL,
     "dt_lancamento" DATE NOT NULL,
     "multiplayer" BOOLEAN NOT NULL,
+    "dt_criacao" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dt_atualizacao" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "jogo_pkey" PRIMARY KEY ("id")
 );
@@ -19,6 +21,8 @@ CREATE TABLE "personagem" (
     "forca" INTEGER NOT NULL,
     "inteligencia" INTEGER NOT NULL,
     "habilidades" TEXT NOT NULL,
+    "dt_criacao" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dt_atualizacao" TIMESTAMP(3) NOT NULL,
     "id_jogo" UUID NOT NULL,
 
     CONSTRAINT "personagem_pkey" PRIMARY KEY ("id")

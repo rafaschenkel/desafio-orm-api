@@ -22,6 +22,9 @@ model Jogo {
   dtLancamento DateTime @map("dt_lancamento") @db.Date
   multiplayer  Boolean  @db.Boolean
 
+  dtCriacao     DateTime @default(now()) @map("dt_criacao") @db.Date
+  dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
+
   personagens Personagem[]
 
   @@map("jogo")
@@ -34,6 +37,9 @@ model Personagem {
   forca        Int
   inteligencia Int
   habilidades  String
+
+  dtCriacao     DateTime @default(now()) @map("dt_criacao") @db.Date
+  dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
 
   idJogo String @map("id_jogo") @db.Uuid
   jogo   Jogo   @relation(fields: [idJogo], references: [id])
