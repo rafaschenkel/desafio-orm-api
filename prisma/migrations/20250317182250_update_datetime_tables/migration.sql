@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "jogo" ALTER COLUMN "dt_lancamento" SET DATA TYPE TIMESTAMPTZ,
+ALTER COLUMN "dt_criacao" SET DATA TYPE TIMESTAMPTZ;
+
+-- AlterTable
+ALTER TABLE "personagem" ALTER COLUMN "dt_criacao" SET DATA TYPE TIMESTAMPTZ;
