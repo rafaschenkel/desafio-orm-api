@@ -74,11 +74,21 @@ export const atualizarJogo = async (req: Request, res: Response) => {
 export const excluirJogo = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const jogoExist = await jogoRepository.obterPorId(id);
+    const includePersonagens = true;
+    const jogoExist = await jogoRepository.obterPorId(id, includePersonagens);
     if (!jogoExist) {
       res.status(404).json({ message: "Jogo não encontrado" });
       return;
     }
+
+    if (jogoExist.personagens.length > 0) {
+      res.status(409).json({
+        message:
+          "Não é possível excluir o jogo pois ele possui personagens cadastrados",
+      });
+      return;
+    }
+
     const response = await jogoRepository.deletar(id);
     res.status(200).json({ message: response });
   } catch (error: any) {
