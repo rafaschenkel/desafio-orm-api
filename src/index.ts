@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import dotEnv from "dotenv";
 import personagemRoutes from "./routes/personagemRoutes";
@@ -10,6 +10,19 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use(
+  (err: SyntaxError, _req: Request, res: Response, next: NextFunction) => {
+    if (err instanceof SyntaxError) {
+      // Erro de JSON malformado
+      res.status(400).json({
+        error: "Corpo da requisição não é um JSON válido ou está vazio.",
+      });
+      return;
+    }
+    next(); // Se o erro não for de sintaxe, continue o fluxo normal
+  }
+);
 
 app.use("/personagem", personagemRoutes);
 app.use("/jogo", jogoRoutes);
