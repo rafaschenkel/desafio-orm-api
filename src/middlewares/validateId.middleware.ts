@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { validateUuid } from "../utils/validateUuid.utils";
+import validateUuid from "../utils/validateUuid.utils";
 
-export async function validateIdMiddleware(
+const validateIdMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
-) {
+): void => {
   try {
     const { id } = req.params;
 
@@ -20,4 +20,6 @@ export async function validateIdMiddleware(
   } catch (error) {
     res.status(500).json({ message: error });
   }
-}
+};
+
+export default validateIdMiddleware;

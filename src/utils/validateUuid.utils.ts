@@ -1,6 +1,8 @@
 import { validate as uuidValidate } from "uuid";
 
-export function validateUuid(uuid: string) {
+const validateUuid = (uuid: string): boolean => {
   const isUuid = uuidValidate(uuid);
   return isUuid;
-}
+};
+
+export default validateUuid;

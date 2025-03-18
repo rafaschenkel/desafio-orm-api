@@ -1,4 +1,4 @@
-export interface UpdatePersonagemDto {
+export default interface UpdatePersonagemDto {
   nome?: string;
   idade?: number;
   forca?: number;

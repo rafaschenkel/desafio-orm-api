@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { JogoRepository } from "../database/jogo.repository";
-import { CreateJogoDto } from "../dtos/create-jogo.dto";
-import { UpdateJogoDto } from "../dtos/update-jogo.dto";
+import JogoRepository from "../database/jogo.repository";
+import CreateJogoDto from "../dtos/create-jogo.dto";
+import UpdateJogoDto from "../dtos/update-jogo.dto";
 
 const jogoRepository = new JogoRepository();
 
-export const listarJogos = async (req: Request, res: Response) => {
+const listarJogos = async (req: Request, res: Response) => {
   try {
     const { includePersonagens } = req.query;
     const jogos = await jogoRepository.listar(
@@ -19,7 +19,7 @@ export const listarJogos = async (req: Request, res: Response) => {
   }
 };
 
-export const obterJogoPorId = async (req: Request, res: Response) => {
+const obterJogoPorId = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { includePersonagens } = req.query;
@@ -37,7 +37,7 @@ export const obterJogoPorId = async (req: Request, res: Response) => {
   }
 };
 
-export const criarJogo = async (req: Request, res: Response) => {
+const criarJogo = async (req: Request, res: Response) => {
   try {
     const { ...jogo }: CreateJogoDto = req.body;
     const jogoExist = await jogoRepository.obterPorNome(jogo.nome);
@@ -56,7 +56,7 @@ export const criarJogo = async (req: Request, res: Response) => {
   }
 };
 
-export const atualizarJogo = async (req: Request, res: Response) => {
+const atualizarJogo = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { ...jogo }: UpdateJogoDto = req.body;
@@ -71,7 +71,7 @@ export const atualizarJogo = async (req: Request, res: Response) => {
   }
 };
 
-export const excluirJogo = async (req: Request, res: Response) => {
+const excluirJogo = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const includePersonagens = true;
@@ -95,3 +95,5 @@ export const excluirJogo = async (req: Request, res: Response) => {
     res.status(500).json({ message: error });
   }
 };
+
+export { listarJogos, obterJogoPorId, criarJogo, atualizarJogo, excluirJogo };

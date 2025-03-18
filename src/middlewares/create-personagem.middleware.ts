@@ -1,15 +1,15 @@
 import { NextFunction, Request, Response } from "express";
-import { JogoRepository } from "../database/jogo.repository";
-import { CreatePersonagemDto } from "../dtos/create-personagem.dto";
-import { validateUuid } from "../utils/validateUuid.utils";
+import JogoRepository from "../database/jogo.repository";
+import validateUuid from "../utils/validateUuid.utils";
+import CreatePersonagemDto from "../dtos/create-personagem.dto";
 
 const jogoRepository = new JogoRepository();
 
-export default async function createPersonagemMiddleware(
+const createPersonagemMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
-) {
+): Promise<void> => {
   try {
     const { ...personagem }: CreatePersonagemDto = req.body;
 
@@ -97,4 +97,6 @@ export default async function createPersonagemMiddleware(
     res.status(500).json({ message: error });
     return;
   }
-}
+};
+
+export default createPersonagemMiddleware;

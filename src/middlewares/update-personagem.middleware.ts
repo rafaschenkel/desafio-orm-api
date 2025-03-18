@@ -1,15 +1,15 @@
 import { NextFunction, Request, Response } from "express";
-import { UpdatePersonagemDto } from "../dtos/update-personagem.dto";
+import PersonagemRepository from "../database/personagem.repository";
 import verifyObject from "../utils/verififyObject.utils";
-import { PersonagemRepository } from "../database/personagem.repository";
+import UpdatePersonagemDto from "../dtos/update-personagem.dto";
 
 const personagemRepository = new PersonagemRepository();
 
-export async function updatePersonagemMiddleware(
+const updatePersonagemMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
-) {
+): Promise<void> => {
   try {
     const { id } = req.params;
     const { ...personagem }: UpdatePersonagemDto = req.body;
@@ -87,4 +87,6 @@ export async function updatePersonagemMiddleware(
   } catch (error) {
     res.status(500).json({ message: error });
   }
-}
+};
+
+export default updatePersonagemMiddleware;

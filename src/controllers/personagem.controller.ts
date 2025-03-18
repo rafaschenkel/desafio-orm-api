@@ -1,11 +1,11 @@
-import { CreatePersonagemDto } from "./../dtos/create-personagem.dto";
 import { Request, Response } from "express";
-import { PersonagemRepository } from "../database/personagem.repository";
-import { UpdateJogoDto } from "../dtos/update-jogo.dto";
+import PersonagemRepository from "../database/personagem.repository";
+import CreatePersonagemDto from "./../dtos/create-personagem.dto";
+import UpdateJogoDto from "../dtos/update-jogo.dto";
 
 const personagemRepository = new PersonagemRepository();
 
-export const listarPersonagens = async (req: Request, res: Response) => {
+const listarPersonagens = async (req: Request, res: Response) => {
   try {
     const { includeJogo } = req.query;
     const personagens = await personagemRepository.listar(
@@ -19,7 +19,7 @@ export const listarPersonagens = async (req: Request, res: Response) => {
   }
 };
 
-export const obterPersonagensPorId = async (req: Request, res: Response) => {
+const obterPersonagensPorId = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { includeJogo } = req.query;
@@ -39,7 +39,7 @@ export const obterPersonagensPorId = async (req: Request, res: Response) => {
   }
 };
 
-export const criarPersonagem = async (req: Request, res: Response) => {
+const criarPersonagem = async (req: Request, res: Response) => {
   try {
     const { ...personagem }: CreatePersonagemDto = req.body;
     const response = await personagemRepository.criar(personagem);
@@ -49,7 +49,7 @@ export const criarPersonagem = async (req: Request, res: Response) => {
   }
 };
 
-export const atualizarPersonagem = async (req: Request, res: Response) => {
+const atualizarPersonagem = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const personagemExist = await personagemRepository.obterPorId(id);
@@ -65,7 +65,7 @@ export const atualizarPersonagem = async (req: Request, res: Response) => {
   }
 };
 
-export const excluirPersonagem = async (req: Request, res: Response) => {
+const excluirPersonagem = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const personagemExist = await personagemRepository.obterPorId(id);
@@ -80,4 +80,12 @@ export const excluirPersonagem = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({ message: error });
   }
+};
+
+export {
+  listarPersonagens,
+  obterPersonagensPorId,
+  criarPersonagem,
+  atualizarPersonagem,
+  excluirPersonagem,
 };

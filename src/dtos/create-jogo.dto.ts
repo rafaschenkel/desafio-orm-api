@@ -1,4 +1,4 @@
-export interface CreateJogoDto {
+export default interface CreateJogoDto {
   nome: string;
   genero: string;
   preco: number;

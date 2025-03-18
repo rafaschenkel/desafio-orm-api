@@ -1,9 +1,9 @@
 import { handlerError } from "../config/error.handler";
 import { prisma } from "../config/prisma.config";
-import { CreatePersonagemDto } from "../dtos/create-personagem.dto";
-import { UpdatePersonagemDto } from "../dtos/update-personagem.dto";
+import CreatePersonagemDto from "../dtos/create-personagem.dto";
+import UpdatePersonagemDto from "../dtos/update-personagem.dto";
 
-export class PersonagemRepository {
+class PersonagemRepository {
   public async listar(includeJogo?: boolean) {
     try {
       const personagens = await prisma.personagem.findMany({
@@ -72,3 +72,5 @@ export class PersonagemRepository {
     }
   }
 }
+
+export default PersonagemRepository;

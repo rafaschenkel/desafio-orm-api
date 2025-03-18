@@ -1,4 +1,4 @@
-export interface UpdateJogoDto {
+export default interface UpdateJogoDto {
   nome?: string;
   genero?: string;
   preco?: number;

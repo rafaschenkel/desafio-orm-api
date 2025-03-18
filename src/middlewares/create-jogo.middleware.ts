@@ -1,15 +1,15 @@
-import { CreateJogoDto } from "./../dtos/create-jogo.dto";
 import { NextFunction, Request, Response } from "express";
-import { JogoRepository } from "../database/jogo.repository";
+import JogoRepository from "../database/jogo.repository";
 import isValidDate from "../utils/validateDate.utils";
+import CreateJogoDto from "./../dtos/create-jogo.dto";
 
 const jogoRepository = new JogoRepository();
 
-export default async function createJogoMiddleware(
+const createJogoMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
-) {
+): Promise<void> => {
   try {
     const { ...jogo }: CreateJogoDto = req.body;
 
@@ -79,4 +79,6 @@ export default async function createJogoMiddleware(
   } catch (error) {
     res.status(500).json({ message: error });
   }
-}
+};
+
+export default createJogoMiddleware;

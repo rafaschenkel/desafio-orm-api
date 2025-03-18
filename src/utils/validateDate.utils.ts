@@ -1,4 +1,4 @@
-export default function isValidDate(value: unknown): boolean {
+const isValidDate = (value: unknown): boolean => {
   if (typeof value === "string") {
     if (/^\d+$/.test(value)) return false; // Rejeita strings numéricas puras
     const date = new Date(value);
@@ -6,4 +6,6 @@ export default function isValidDate(value: unknown): boolean {
   }
 
   return false;
-}
+};
+
+export default isValidDate;

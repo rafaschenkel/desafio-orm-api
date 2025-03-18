@@ -7,8 +7,8 @@ import {
   obterPersonagensPorId,
 } from "../controllers/personagem.controller";
 import createPersonagemMiddleware from "../middlewares/create-personagem.middleware";
-import { updatePersonagemMiddleware } from "../middlewares/update-personagem.middleware";
-import { validateIdMiddleware } from "../middlewares/validateId.middleware";
+import updatePersonagemMiddleware from "../middlewares/update-personagem.middleware";
+import validateIdMiddleware from "../middlewares/validateId.middleware";
 
 const router = express.Router();
 

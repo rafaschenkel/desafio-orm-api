@@ -8,7 +8,7 @@ import {
 } from "../controllers/jogo.controller";
 import createJogoMiddleware from "../middlewares/create-jogo.middleware";
 import updateJogoMiddleware from "../middlewares/update-jogo.middleware";
-import { validateIdMiddleware } from "../middlewares/validateId.middleware";
+import validateIdMiddleware from "../middlewares/validateId.middleware";
 
 const router = express.Router();
 

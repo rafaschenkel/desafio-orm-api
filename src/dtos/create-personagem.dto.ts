@@ -1,4 +1,4 @@
-export interface CreatePersonagemDto {
+export default interface CreatePersonagemDto {
   idJogo: string;
   nome: string;
   idade: number;
