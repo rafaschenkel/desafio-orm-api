@@ -1,6 +1,6 @@
 # Desafio de API
 
-Este projeto é a solução para um desafio da Growdev, onde o objetivo era criar uma API RESTful utilizando classes, repositórios e Prisma ORM. A API foi construída com **TypeScript**, **Express** e **Prisma**, e foi testada utilizando o **Postman**.
+Este projeto é a solução para um desafio da **[Growdev](https://www.growdev.com.br)**, onde o objetivo era criar uma API RESTful utilizando classes, repositórios e Prisma ORM. A API foi construída com **TypeScript**, **Express** e **Prisma**, e foi testada utilizando o **Postman**.
 
 ## Funcionalidades
 
