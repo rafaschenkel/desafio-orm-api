@@ -3,6 +3,7 @@ import JogoRepository from "../database/jogo.repository";
 import UpdateJogoDto from "../dtos/update-jogo.dto";
 import isValidDate from "../utils/validateDate.utils";
 import verifyObject from "../utils/verififyObject.utils";
+import handlerError from "../config/error.handler";
 
 const jogoRepository = new JogoRepository();
 
@@ -12,17 +13,19 @@ const updateJogoMiddleware = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const { idJogo } = req.params;
     const { ...jogo }: UpdateJogoDto = req.body;
 
     if (Object.keys(jogo).length === 0) {
-      res.status(400).json({ message: "Nenhum campo foi enviado no body" });
+      res
+        .status(400)
+        .json({ ok: false, message: "Nenhum campo foi enviado no body" });
       return;
     }
 
-    const jogoExist = await jogoRepository.obterPorId(id);
+    const jogoExist = await jogoRepository.obterPorId(idJogo);
     if (!jogoExist) {
-      res.status(404).json({ message: "Jogo não encontrado" });
+      res.status(404).json({ ok: false, message: "Jogo não encontrado" });
       return;
     }
 
@@ -31,6 +34,7 @@ const updateJogoMiddleware = async (
       jogo.nome === ""
     ) {
       res.status(400).json({
+        ok: false,
         message: "O nome do jogo está em um formato inválido",
       });
       return;
@@ -41,6 +45,7 @@ const updateJogoMiddleware = async (
       jogo.genero === ""
     ) {
       res.status(400).json({
+        ok: false,
         message: "O gênero do jogo está em um formato inválido",
       });
       return;
@@ -53,6 +58,7 @@ const updateJogoMiddleware = async (
       (jogo.preco && typeof jogo.preco !== "number")
     ) {
       res.status(400).json({
+        ok: false,
         message: "O preco do jogo está em um formato inválido",
       });
       return;
@@ -65,6 +71,7 @@ const updateJogoMiddleware = async (
       (jogo.tamanho && typeof jogo.tamanho !== "number")
     ) {
       res.status(400).json({
+        ok: false,
         message: "O tamanho do jogo está em um formato inválido",
       });
       return;
@@ -72,6 +79,7 @@ const updateJogoMiddleware = async (
 
     if (verifyObject(jogo, "dtLancamento") && !isValidDate(jogo.dtLancamento)) {
       res.status(400).json({
+        ok: false,
         message: "A data de lancamento do jogo está em um formato inválido",
       });
       return;
@@ -82,6 +90,7 @@ const updateJogoMiddleware = async (
       typeof jogo.multiplayer !== "boolean"
     ) {
       res.status(400).json({
+        ok: false,
         message: "O multiplayer do jogo está em um formato inválido",
       });
       return;
@@ -89,7 +98,7 @@ const updateJogoMiddleware = async (
 
     next();
   } catch (error) {
-    res.status(500).json({ message: error });
+    handlerError(error, res);
   }
 };
 

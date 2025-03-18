@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import PersonagemRepository from "../database/personagem.repository";
 import verifyObject from "../utils/verififyObject.utils";
 import UpdatePersonagemDto from "../dtos/update-personagem.dto";
+import handlerError from "../config/error.handler";
 
 const personagemRepository = new PersonagemRepository();
 
@@ -11,17 +12,22 @@ const updatePersonagemMiddleware = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const { idPersonagem, idJogo } = req.params;
     const { ...personagem }: UpdatePersonagemDto = req.body;
 
     if (Object.keys(personagem).length === 0) {
-      res.status(400).json({ message: "Nenhum campo foi enviado no body" });
+      res
+        .status(400)
+        .json({ ok: false, message: "Nenhum campo foi enviado no body" });
       return;
     }
 
-    const personagemExist = await personagemRepository.obterPorId(id);
+    const personagemExist = await personagemRepository.obterPorId(
+      idJogo,
+      idPersonagem
+    );
     if (!personagemExist) {
-      res.status(404).json({ message: "Personagem não encontrado" });
+      res.status(404).json({ ok: false, message: "Personagem não encontrado" });
       return;
     }
 
@@ -31,6 +37,7 @@ const updatePersonagemMiddleware = async (
       personagem.nome === ""
     ) {
       res.status(400).json({
+        ok: false,
         message: "O nome do personagem está em um formato inválido",
       });
       return;
@@ -43,6 +50,7 @@ const updatePersonagemMiddleware = async (
       (personagem.idade && typeof personagem.idade !== "number")
     ) {
       res.status(400).json({
+        ok: false,
         message: "A idade do personagem está em um formato inválido",
       });
       return;
@@ -55,6 +63,7 @@ const updatePersonagemMiddleware = async (
       (personagem.forca && typeof personagem.forca !== "number")
     ) {
       res.status(400).json({
+        ok: false,
         message: "A forca do personagem está em um formato inválido",
       });
       return;
@@ -67,6 +76,7 @@ const updatePersonagemMiddleware = async (
       (personagem.inteligencia && typeof personagem.inteligencia !== "number")
     ) {
       res.status(400).json({
+        ok: false,
         message: "A inteligencia do personagem está em um formato inválido",
       });
       return;
@@ -78,6 +88,7 @@ const updatePersonagemMiddleware = async (
       personagem.habilidades === ""
     ) {
       res.status(400).json({
+        ok: false,
         message: "As habilidades do personagem estão em um formato inválido",
       });
       return;
@@ -85,7 +96,7 @@ const updatePersonagemMiddleware = async (
 
     next();
   } catch (error) {
-    res.status(500).json({ message: error });
+    handlerError(error, res);
   }
 };
 

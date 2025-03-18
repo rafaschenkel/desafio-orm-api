@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import JogoRepository from "../database/jogo.repository";
 import validateUuid from "../utils/validateUuid.utils";
 import CreatePersonagemDto from "../dtos/create-personagem.dto";
+import handlerError from "../config/error.handler";
 
 const jogoRepository = new JogoRepository();
 
@@ -11,24 +12,28 @@ const createPersonagemMiddleware = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    const { idJogo } = req.params;
     const { ...personagem }: CreatePersonagemDto = req.body;
 
     if (Object.keys(personagem).length === 0) {
-      res.status(400).json({ message: "Nenhum campo foi enviado no body" });
+      res
+        .status(400)
+        .json({ ok: false, message: "Nenhum campo foi enviado no body" });
       return;
     }
 
-    if (!personagem.idJogo || !validateUuid(personagem.idJogo)) {
+    if (!idJogo || !validateUuid(idJogo)) {
       res.status(400).json({
+        ok: false,
         message:
           "O id do jogo é obrigatório ou está em um formato inválido, deve ser um uuidV4",
       });
       return;
     }
 
-    const jogoExist = await jogoRepository.obterPorId(personagem.idJogo);
+    const jogoExist = await jogoRepository.obterPorId(idJogo);
     if (!jogoExist) {
-      res.status(404).json({ message: "Jogo não encontrado" });
+      res.status(404).json({ ok: false, message: "Jogo não encontrado" });
       return;
     }
 
@@ -38,6 +43,7 @@ const createPersonagemMiddleware = async (
       personagem.nome === ""
     ) {
       res.status(400).json({
+        ok: false,
         message:
           "O nome do personagem é obrigatório ou está em um formato inválido",
       });
@@ -50,6 +56,7 @@ const createPersonagemMiddleware = async (
       personagem.idade <= 0
     ) {
       res.status(400).json({
+        ok: false,
         message:
           "A idade do personagem é obrigatória ou está em um formato inválido",
       });
@@ -62,6 +69,7 @@ const createPersonagemMiddleware = async (
       personagem.forca < 0
     ) {
       res.status(400).json({
+        ok: false,
         message:
           "A força do personagem é obrigatória ou está em um formato inválido",
       });
@@ -74,6 +82,7 @@ const createPersonagemMiddleware = async (
       personagem.inteligencia < 0
     ) {
       res.status(400).json({
+        ok: false,
         message:
           "A inteligencia do personagem é obrigatória ou está em um formato inválido",
       });
@@ -86,6 +95,7 @@ const createPersonagemMiddleware = async (
       personagem.habilidades === ""
     ) {
       res.status(400).json({
+        ok: false,
         message:
           "As habilidades do personagem são obrigatórias ou estão em um formato inválido",
       });
@@ -94,7 +104,7 @@ const createPersonagemMiddleware = async (
 
     next();
   } catch (error) {
-    res.status(500).json({ message: error });
+    handlerError(error, res);
     return;
   }
 };

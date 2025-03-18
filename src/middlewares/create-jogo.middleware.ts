@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import JogoRepository from "../database/jogo.repository";
 import isValidDate from "../utils/validateDate.utils";
 import CreateJogoDto from "./../dtos/create-jogo.dto";
+import handlerError from "../config/error.handler";
 
 const jogoRepository = new JogoRepository();
 
@@ -14,12 +15,15 @@ const createJogoMiddleware = async (
     const { ...jogo }: CreateJogoDto = req.body;
 
     if (Object.keys(jogo).length === 0) {
-      res.status(400).json({ message: "Nenhum campo foi enviado no body" });
+      res
+        .status(400)
+        .json({ ok: false, message: "Nenhum campo foi enviado no body" });
       return;
     }
 
     if (!jogo.nome || typeof jogo.nome !== "string" || jogo.nome === "") {
       res.status(400).json({
+        ok: false,
         message: "O nome do jogo é obrigatório ou está em um formato inválido",
       });
       return;
@@ -28,12 +32,13 @@ const createJogoMiddleware = async (
     const jogoExist = await jogoRepository.obterPorNome(jogo.nome);
 
     if (jogoExist) {
-      res.status(409).json({ message: "Jogo já cadastrado" });
+      res.status(409).json({ ok: false, message: "Jogo já cadastrado" });
       return;
     }
 
     if (!jogo.genero || typeof jogo.genero !== "string" || jogo.genero === "") {
       res.status(400).json({
+        ok: false,
         message:
           "O gênero do jogo é obrigatório ou está em um formato inválido",
       });
@@ -42,6 +47,7 @@ const createJogoMiddleware = async (
 
     if (!jogo.preco || typeof jogo.preco !== "number" || jogo.preco < 0) {
       res.status(400).json({
+        ok: false,
         message: "O preco do jogo é obrigatório ou está em um formato inválido",
       });
       return;
@@ -53,6 +59,7 @@ const createJogoMiddleware = async (
       jogo.tamanho <= 0
     ) {
       res.status(400).json({
+        ok: false,
         message:
           "O tamanho do jogo é obrigatório ou está em um formato inválido",
       });
@@ -61,6 +68,7 @@ const createJogoMiddleware = async (
 
     if (!jogo.dtLancamento || !isValidDate(jogo.dtLancamento)) {
       res.status(400).json({
+        ok: false,
         message:
           "A data de lancamento do jogo é obrigatório ou está em um formato inválido",
       });
@@ -69,6 +77,7 @@ const createJogoMiddleware = async (
 
     if (typeof jogo.multiplayer !== "boolean") {
       res.status(400).json({
+        ok: false,
         message:
           "O multiplayer do jogo é obrigatório ou está em um formato inválido",
       });
@@ -77,7 +86,7 @@ const createJogoMiddleware = async (
 
     next();
   } catch (error) {
-    res.status(500).json({ message: error });
+    handlerError(error, res);
   }
 };
 

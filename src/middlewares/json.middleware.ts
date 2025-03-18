@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import handlerError from "../config/error.handler";
 
 const jsonMiddleware = async (
   err: SyntaxError,
@@ -10,14 +11,15 @@ const jsonMiddleware = async (
     if (!req.is("application/json") || err instanceof SyntaxError) {
       // Erro de JSON malformado
       res.status(415).json({
-        error: "Corpo da requisição não é um JSON válido.",
+        ok: false,
+        message: "Corpo da requisição não é um JSON válido.",
       });
       return;
     }
 
     next();
   } catch (error) {
-    res.status(500).json({ message: error });
+    handlerError(error, res);
   }
 };
 
