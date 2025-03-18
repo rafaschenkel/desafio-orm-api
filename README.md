@@ -88,7 +88,7 @@ A estrutura do código está organizada da seguinte forma:
   - **config/** - Comtém a instância do **PrismaClient** e a função que trata os erros.
   - **controllers/** - Contém todos os controladores da API, responsáveis por gerenciar as requisições e respostas.
   - **database/** - Contém as classes de repositório, como **JogoRepository** e **PersonagemRepository**, responsáveis pela interação com o banco de dados.
-  - **middlewares/** - Contém funções middleware que são executadas antes de chegar aos controladores, como validações.
   - **dtos/** - Contém as definições dos modelos do Prisma, representando as tabelas no banco de dados.
+  - **middlewares/** - Contém funções middleware que são executadas antes de chegar aos controladores, como validações.
   - **routes/** - Define todas as rotas da API, conectando os endpoints aos controladores.
   - **utils/** - Contém funções auxiliares, sendo usadas pelos controllers e middlewares.
