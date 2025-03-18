@@ -19,7 +19,7 @@ model Jogo {
   genero       String   @db.VarChar(50)
   preco        Decimal  @db.Decimal(6, 2)
   tamanho      Int
-  dtLancamento DateTime @map("dt_lancamento") @db.Timestamptz()
+  dtLancamento DateTime @map("dt_lancamento") @db.Date()
   multiplayer  Boolean  @db.Boolean
 
   dtCriacao     DateTime @default(now()) @map("dt_criacao") @db.Timestamptz()
@@ -33,9 +33,9 @@ model Jogo {
 model Personagem {
   id           String @id @default(uuid()) @db.Uuid
   nome         String @db.VarChar(50)
-  idade        Int
-  forca        Int
-  inteligencia Int
+  idade        Int    @db.SmallInt
+  forca        Int    @db.SmallInt
+  inteligencia Int    @db.SmallInt
   habilidades  String
 
   dtCriacao     DateTime @default(now()) @map("dt_criacao") @db.Timestamptz()
